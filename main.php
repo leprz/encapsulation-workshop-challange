@@ -7,6 +7,7 @@ use App\Printing\BalancePrinter;
 use App\Printing\CapitalPrinter;
 use App\Printing\ConsoleFormattedMoneyPrinter;
 use App\Printing\ConsolePrinter;
+use App\Printing\SectionPrinter;
 use App\Printing\WalletPrinter;
 use App\Trading\Customer;
 use App\Trading\Exception\NotEnoughFundsErrorException;
@@ -21,6 +22,7 @@ $moneyPrinter = new ConsoleFormattedMoneyPrinter($output);
 $capitalPrinter = new CapitalPrinter($output, $moneyPrinter);
 $walletPrinter = new WalletPrinter($output, $moneyPrinter);
 $balancePrinter = new BalancePrinter($output, $moneyPrinter);
+$sectionPrinter = new SectionPrinter($output);
 
 $manufacturer = new Manufacturer();
 $shop = new Shop(new Money(0));
@@ -41,6 +43,7 @@ try {
     exit(1);
 }
 
+$sectionPrinter->print('Capital Summary');
 $manufacturer->printCapitalOn($capitalPrinter);
 $shop->printCapitalOn($capitalPrinter);
 $johnDoe->printMoneyLeftOn($walletPrinter);

@@ -10,6 +10,7 @@ final class ConsoleLayout
     public const AMOUNT_WIDTH = 10;
     public const INDENT = 2;
     public const DIVIDER = '─';
+    public const SECTION_DIVIDER = '═';
 
     public static function dotRowPrefix(string $label): string
     {
