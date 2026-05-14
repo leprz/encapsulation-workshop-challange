@@ -2,11 +2,17 @@
 
 declare(strict_types=1);
 
-namespace App;
+namespace App\Trading;
 
+use App\Banking\BankAccount;
+use App\Catalog\Product;
+use App\Money\Money;
+use App\Printing\Printer;
+use App\Trading\Exception\ManufacturerUnknownProductErrorException;
+use App\Trading\Exception\NotEnoughFoundsErrorException;
 use LogicException;
 
-class Manufacturer
+class Manufacturer implements Supplier
 {
     /** @var Product[] */
     private array $products;
@@ -32,17 +38,19 @@ class Manufacturer
     }
 
     /**
-     * @throws \App\NotEnoughFoundsErrorException
-     * @throws \App\ManufacturerUnknownProductErrorException
+     * @throws NotEnoughFoundsErrorException
+     * @throws ManufacturerUnknownProductErrorException
      */
-    public function sellTo(int $sku, Shop $shop): void
+    public function sellTo(int $sku, Reseller $reseller): void
     {
-        $income = $this->makeNewProduct($sku)->sellTo($shop);
+        $product = $this->makeNewProduct($sku);
+        $income = $product->sellTo($reseller);
+        $reseller->receiveStock($sku, $product);
         $this->bankAccount->addIncome($income);
     }
 
     /**
-     * @throws \App\ManufacturerUnknownProductErrorException
+     * @throws ManufacturerUnknownProductErrorException
      */
     private function makeNewProduct(int $sku): Product
     {
@@ -57,10 +65,10 @@ class Manufacturer
         return clone $this->products[$sku];
     }
 
-    public function printCapital(): void
+    public function printCapital(Printer $printer): void
     {
-        echo "Manufacturer capital is: ";
-        $this->bankAccount->printCapital();
-        echo "\n";
+        $printer->write("Manufacturer capital is: ");
+        $this->bankAccount->printCapital($printer);
+        $printer->writeLine("");
     }
 }

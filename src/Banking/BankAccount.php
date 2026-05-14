@@ -2,7 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App;
+namespace App\Banking;
+
+use App\Money\Money;
+use App\Printing\Printer;
 
 class BankAccount
 {
@@ -39,12 +42,12 @@ class BankAccount
         );
     }
 
-    public function printCapital(): void
+    public function printCapital(Printer $printer): void
     {
-        echo $this->getCapital();
+        $printer->write((string)$this->getCapital());
     }
 
-    public function printBalance(): void
+    public function printBalance(Printer $printer): void
     {
         $total = new Money(0);
 
@@ -52,12 +55,12 @@ class BankAccount
             $total = $total->add($transaction);
 
             if ($transaction->isNegative()) {
-                echo "$transaction \n";
+                $printer->writeLine("$transaction ");
             } else {
-                echo " $transaction \n";
+                $printer->writeLine(" $transaction ");
             }
         }
-        echo "----------\n";
-        echo "total: $total\n";
+        $printer->writeLine("----------");
+        $printer->writeLine("total: $total");
     }
 }
