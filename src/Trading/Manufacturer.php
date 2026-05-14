@@ -7,7 +7,7 @@ namespace App\Trading;
 use App\Banking\BankAccount;
 use App\Catalog\Product;
 use App\Money\Money;
-use App\Printing\Printer;
+use App\Printing\CapitalPrinter;
 use App\Trading\Exception\ManufacturerUnknownProductErrorException;
 use App\Trading\Exception\NotEnoughFoundsErrorException;
 use LogicException;
@@ -65,10 +65,8 @@ class Manufacturer implements Supplier
         return clone $this->products[$sku];
     }
 
-    public function printCapital(Printer $printer): void
+    public function printCapitalOn(CapitalPrinter $printer): void
     {
-        $printer->write("Manufacturer capital is: ");
-        $this->bankAccount->printCapital($printer);
-        $printer->writeLine("");
+        $this->bankAccount->printCapitalOn($printer, 'Manufacturer');
     }
 }

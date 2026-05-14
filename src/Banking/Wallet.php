@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Banking;
 
 use App\Money\Money;
-use App\Printing\Printer;
+use App\Printing\WalletPrinter;
 use App\Trading\Exception\WalletNotEnoughCashErrorException;
 
 class Wallet
@@ -33,8 +33,8 @@ class Wallet
         return $amount;
     }
 
-    public function printAvailableCache(Printer $printer): void
+    public function printOn(WalletPrinter $printer, string $owner): void
     {
-        $printer->writeLine("Cash in the wallet: {$this->cash} ");
+        $printer->render($owner, $this->cash->format());
     }
 }

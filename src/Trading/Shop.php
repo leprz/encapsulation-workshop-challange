@@ -7,6 +7,8 @@ namespace App\Trading;
 use App\Banking\BankAccount;
 use App\Catalog\Product;
 use App\Money\Money;
+use App\Printing\BalancePrinter;
+use App\Printing\CapitalPrinter;
 use App\Printing\Printer;
 use App\Trading\Exception\ManufacturerUnknownProductErrorException;
 use App\Trading\Exception\NotEnoughFoundsErrorException;
@@ -74,15 +76,13 @@ class Shop implements Reseller
         $this->stock[$sku][] = $product->addPriceMargin(0.2);
     }
 
-    public function printCapital(Printer $printer): void
+    public function printCapitalOn(CapitalPrinter $printer): void
     {
-        $printer->write("Shop capital is: ");
-        $this->bankAccount->printCapital($printer);
-        $printer->writeLine("");
+        $this->bankAccount->printCapitalOn($printer, 'Shop');
     }
 
-    public function printBalance(Printer $printer): void
+    public function printBalanceOn(BalancePrinter $printer): void
     {
-        $this->bankAccount->printBalance($printer);
+        $this->bankAccount->printBalanceOn($printer, 'Shop balance');
     }
 }

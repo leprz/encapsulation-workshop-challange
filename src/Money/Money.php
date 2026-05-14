@@ -43,12 +43,17 @@ class Money
         return $this->amount === $money->amount;
     }
 
+    public function format(): FormattedMoney
+    {
+        $display = '$' . number_format(abs($this->amount), 2);
+        return new FormattedMoney(
+            $this->isNegative() ? '-' . $display : $display,
+            $this->isNegative()
+        );
+    }
+
     public function __toString(): string
     {
-        if ($this->isNegative()) {
-            return '-$' . $this->amount * -1;
-        }
-
-        return '$' . $this->amount;
+        return ($this->isNegative() ? '-$' : '$') . number_format(abs($this->amount), 2);
     }
 }

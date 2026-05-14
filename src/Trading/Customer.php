@@ -6,7 +6,7 @@ namespace App\Trading;
 
 use App\Banking\Wallet;
 use App\Money\Money;
-use App\Printing\Printer;
+use App\Printing\WalletPrinter;
 use App\Trading\Exception\WalletNotEnoughCashErrorException;
 
 class Customer implements Buyer
@@ -26,9 +26,8 @@ class Customer implements Buyer
         return $this->wallet->withdrawMoney($price);
     }
 
-    public function printMoneyLeft(Printer $printer): void
+    public function printMoneyLeftOn(WalletPrinter $printer): void
     {
-        $printer->write("Customer ");
-        $this->wallet->printAvailableCache($printer);
+        $this->wallet->printOn($printer, 'Customer');
     }
 }

@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace App\Banking;
 
 use App\Money\Money;
-use App\Printing\Printer;
+use App\Printing\BalancePrinter;
+use App\Printing\CapitalPrinter;
 
 class BankAccount
 {
@@ -42,25 +43,21 @@ class BankAccount
         );
     }
 
-    public function printCapital(Printer $printer): void
+    public function printCapitalOn(CapitalPrinter $printer, string $owner): void
     {
-        $printer->write((string)$this->getCapital());
+        $printer->render($owner, $this->getCapital()->format());
     }
 
-    public function printBalance(Printer $printer): void
+    public function printBalanceOn(BalancePrinter $printer, string $title): void
     {
+        $printer->start($title);
+
         $total = new Money(0);
-
         foreach ($this->balance as $transaction) {
+            $printer->entry($transaction->format());
             $total = $total->add($transaction);
-
-            if ($transaction->isNegative()) {
-                $printer->writeLine("$transaction ");
-            } else {
-                $printer->writeLine(" $transaction ");
-            }
         }
-        $printer->writeLine("----------");
-        $printer->writeLine("total: $total");
+
+        $printer->finish($total->format());
     }
 }
