@@ -6,11 +6,8 @@ namespace App\Money;
 
 class Money
 {
-    private float $amount;
-
-    public function __construct(float $amount)
+    public function __construct(private readonly float $amount)
     {
-        $this->amount = $amount;
     }
 
     public function subtract(Money $amount): self

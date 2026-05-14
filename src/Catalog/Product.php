@@ -10,13 +10,10 @@ use App\Trading\Exception\NotEnoughFundsErrorException;
 
 class Product
 {
-    private int $sku;
-    private Money $price;
-
-    public function __construct(int $sku, Money $price)
-    {
-        $this->sku = $sku;
-        $this->price = $price;
+    public function __construct(
+        private readonly int $sku,
+        private readonly Money $price
+    ) {
     }
 
     /**

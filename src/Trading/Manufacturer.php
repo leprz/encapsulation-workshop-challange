@@ -13,7 +13,7 @@ use App\Trading\Exception\NotEnoughFundsErrorException;
 
 class Manufacturer implements Supplier
 {
-    private const CATALOG = [
+    private const array CATALOG = [
         1 => ['price' => 10, 'cost' => 8],
         2 => ['price' => 20, 'cost' => 15],
         3 => ['price' => 30, 'cost' => 22],

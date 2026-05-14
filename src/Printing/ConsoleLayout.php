@@ -6,11 +6,11 @@ namespace App\Printing;
 
 final class ConsoleLayout
 {
-    public const TOTAL_WIDTH = 50;
-    public const AMOUNT_WIDTH = 10;
-    public const INDENT = 2;
-    public const DIVIDER = '─';
-    public const SECTION_DIVIDER = '═';
+    public const int TOTAL_WIDTH = 50;
+    public const int AMOUNT_WIDTH = 10;
+    public const int INDENT = 2;
+    public const string DIVIDER = '─';
+    public const string SECTION_DIVIDER = '═';
 
     public static function dotRowPrefix(string $label): string
     {

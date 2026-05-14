@@ -10,7 +10,7 @@ use App\Printing\CapitalPrinter;
 
 class BankAccount
 {
-    private const OVERDRAFT_COMMISSION_RATE = 0.05;
+    private const float OVERDRAFT_COMMISSION_RATE = 0.05;
 
     /** @var Transaction[] */
     private array $balance = [];

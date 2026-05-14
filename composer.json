@@ -2,6 +2,7 @@
     "name": "leprz/encapsulation",
     "description": "",
     "require": {
+      "php": "^8.4",
       "ext-mbstring": "*"
     },
     "autoload": {

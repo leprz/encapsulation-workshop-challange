@@ -6,8 +6,8 @@ namespace App\Printing;
 
 final class AnsiColor
 {
-    public const GREEN = "\033[32m";
-    public const RED = "\033[31m";
-    public const BOLD_RED = "\033[1;31m";
-    public const RESET = "\033[0m";
+    public const string GREEN = "\033[32m";
+    public const string RED = "\033[31m";
+    public const string BOLD_RED = "\033[1;31m";
+    public const string RESET = "\033[0m";
 }

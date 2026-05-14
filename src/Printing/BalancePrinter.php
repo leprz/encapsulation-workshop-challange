@@ -9,7 +9,7 @@ use App\Money\FormattedMoneyPrinter;
 
 class BalancePrinter
 {
-    private const TOTAL_LABEL = 'Total';
+    private const string TOTAL_LABEL = 'Total';
 
     public function __construct(
         private readonly Printer $output,

@@ -16,7 +16,7 @@ use App\Trading\Exception\ProductNotAvailableInStockErrorException;
 
 class Shop implements Reseller
 {
-    private const RESALE_MARGIN = 0.2;
+    private const float RESALE_MARGIN = 0.2;
 
     /**
      * @var array<int, Product[]>

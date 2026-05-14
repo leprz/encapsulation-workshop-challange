@@ -10,11 +10,8 @@ use App\Trading\Exception\WalletNotEnoughCashErrorException;
 
 class Wallet
 {
-    private Money $cash;
-
-    public function __construct(Money $cash)
+    public function __construct(private Money $cash)
     {
-        $this->cash = $cash;
     }
 
     /**
