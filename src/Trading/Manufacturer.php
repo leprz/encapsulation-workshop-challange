@@ -44,7 +44,7 @@ class Manufacturer implements Supplier
         $product = $this->makeNewProduct($sku);
         $income = $product->sellTo($reseller);
         $reseller->receiveStock($sku, $product);
-        $this->bankAccount->addIncome($income);
+        $this->bankAccount->addIncome($income, "Sale #$sku");
     }
 
     /**
@@ -58,7 +58,7 @@ class Manufacturer implements Supplier
             );
         }
 
-        $this->bankAccount->addExpense($this->productionCosts[$sku]);
+        $this->bankAccount->addExpense($this->productionCosts[$sku], "Production #$sku");
 
         return clone $this->products[$sku];
     }

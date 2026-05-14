@@ -25,10 +25,9 @@ class BalancePrinter
         $this->output->writeLine($indent . str_repeat(ConsoleLayout::DIVIDER, ConsoleLayout::TOTAL_WIDTH - ConsoleLayout::INDENT));
     }
 
-    public function entry(FormattedMoney $tx): void
+    public function entry(string $title, FormattedMoney $tx): void
     {
-        $leftPad = ConsoleLayout::TOTAL_WIDTH - ConsoleLayout::INDENT - ConsoleLayout::AMOUNT_WIDTH;
-        $this->output->write(str_repeat(' ', ConsoleLayout::INDENT) . str_repeat(' ', $leftPad));
+        $this->output->write(ConsoleLayout::dotRowPrefix($title));
         $tx->render($this->moneyPrinter);
         $this->output->writeLine('');
     }

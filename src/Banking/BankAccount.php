@@ -12,22 +12,20 @@ class BankAccount
 {
     private const OVERDRAFT_COMMISSION_RATE = 0.05;
 
-    /**
-     * @var Money[]
-     */
+    /** @var Transaction[] */
     private array $balance = [];
 
-    public function addIncome(Money $amount): void
+    public function addIncome(Money $amount, string $title): void
     {
-        $this->balance[] = $amount;
+        $this->balance[] = new Transaction($title, $amount);
     }
 
-    public function addExpense(Money $expense): void
+    public function addExpense(Money $expense, string $title): void
     {
-        $this->balance[] = $expense->negate();
+        $this->balance[] = new Transaction($title, $expense->negate());
 
         if ($this->getCapital()->isNegative()) {
-            $this->balance[] = $this->calculateCommission($expense);
+            $this->balance[] = new Transaction('Overdraft commission', $this->calculateCommission($expense));
         }
     }
 
@@ -40,7 +38,7 @@ class BankAccount
     {
         return array_reduce(
             $this->balance,
-            static fn(Money $carry, Money $item): Money => $carry->add($item),
+            static fn(Money $carry, Transaction $tx): Money => $carry->add($tx->amount),
             new Money(0)
         );
     }
@@ -55,9 +53,9 @@ class BankAccount
         $printer->start($title);
 
         $total = new Money(0);
-        foreach ($this->balance as $transaction) {
-            $printer->entry($transaction->format());
-            $total = $total->add($transaction);
+        foreach ($this->balance as $tx) {
+            $printer->entry($tx->title, $tx->amount->format());
+            $total = $total->add($tx->amount);
         }
 
         $printer->finish($total->format());

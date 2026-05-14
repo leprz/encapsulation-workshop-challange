@@ -28,7 +28,7 @@ class Shop implements Reseller
     public function __construct(Money $capital)
     {
         $this->bankAccount = new BankAccount();
-        $this->bankAccount->addIncome($capital);
+        $this->bankAccount->addIncome($capital, 'Initial capital');
     }
 
     /**
@@ -39,7 +39,7 @@ class Shop implements Reseller
     {
         $paidPrice = $this->takeProductFromStockBySku($sku)->sellTo($buyer);
 
-        $this->bankAccount->addIncome($paidPrice);
+        $this->bankAccount->addIncome($paidPrice, "Sale #$sku");
     }
 
     /**
@@ -68,7 +68,7 @@ class Shop implements Reseller
 
     public function buyProduct(int $sku, Money $price): Money
     {
-        $this->bankAccount->addExpense($price);
+        $this->bankAccount->addExpense($price, "Purchase #$sku");
 
         return $price;
     }
