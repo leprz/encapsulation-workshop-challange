@@ -2,9 +2,16 @@
 
 declare(strict_types=1);
 
-namespace App;
+namespace App\Trading;
 
-class Manufacturer implements ProductSupplierInterface
+use App\Banking\BankAccount;
+use App\Catalog\Product;
+use App\Money\Money;
+use App\Printing\CapitalPrinter;
+use App\Trading\Exception\ManufacturerUnknownProductErrorException;
+use App\Trading\Exception\NotEnoughFundsErrorException;
+
+class Manufacturer implements Supplier
 {
     private const CATALOG = [
         1 => ['price' => 10, 'cost' => 8],
@@ -29,17 +36,19 @@ class Manufacturer implements ProductSupplierInterface
     }
 
     /**
-     * @throws \App\NotEnoughFundsErrorException
-     * @throws \App\ManufacturerUnknownProductErrorException
+     * @throws NotEnoughFundsErrorException
+     * @throws ManufacturerUnknownProductErrorException
      */
-    public function sellTo(int $sku, ProductConsumerInterface $consumer): void
+    public function sellTo(int $sku, Reseller $reseller): void
     {
-        $income = $this->makeNewProduct($sku)->sellTo($consumer);
-        $this->bankAccount->addIncome($income);
+        $product = $this->makeNewProduct($sku);
+        $income = $product->sellTo($reseller);
+        $reseller->receiveStock($sku, $product);
+        $this->bankAccount->addIncome($income, "Sale #$sku");
     }
 
     /**
-     * @throws \App\ManufacturerUnknownProductErrorException
+     * @throws ManufacturerUnknownProductErrorException
      */
     private function makeNewProduct(int $sku): Product
     {
@@ -49,15 +58,13 @@ class Manufacturer implements ProductSupplierInterface
             );
         }
 
-        $this->bankAccount->addExpense($this->productionCosts[$sku]);
+        $this->bankAccount->addExpense($this->productionCosts[$sku], "Production #$sku");
 
         return clone $this->products[$sku];
     }
 
-    public function printCapital(): void
+    public function printCapitalOn(CapitalPrinter $printer): void
     {
-        echo "Manufacturer capital is: ";
-        $this->bankAccount->printCapital();
-        echo "\n";
+        $this->bankAccount->printCapitalOn($printer, 'Manufacturer');
     }
 }

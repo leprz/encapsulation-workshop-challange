@@ -1,7 +1,9 @@
 {
     "name": "leprz/encapsulation",
     "description": "",
-    "require": {},
+    "require": {
+      "ext-mbstring": "*"
+    },
     "autoload": {
         "psr-4": {
             "App\\": "src/"

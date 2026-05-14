@@ -2,7 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App;
+namespace App\Banking;
+
+use App\Money\Money;
+use App\Printing\WalletPrinter;
+use App\Trading\Exception\WalletNotEnoughCashErrorException;
 
 class Wallet
 {
@@ -14,9 +18,7 @@ class Wallet
     }
 
     /**
-     * @param \App\Money $amount
-     * @return \App\Money
-     * @throws \App\WalletNotEnoughCashErrorException
+     * @throws WalletNotEnoughCashErrorException
      */
     public function withdrawMoney(Money $amount): Money
     {
@@ -31,8 +33,8 @@ class Wallet
         return $amount;
     }
 
-    public function printAvailableCash(): void
+    public function printOn(WalletPrinter $printer, string $owner): void
     {
-        echo "Cash in the wallet: {$this->cash} \n";
+        $printer->render($owner, $this->cash->format());
     }
 }

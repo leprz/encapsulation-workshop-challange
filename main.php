@@ -2,41 +2,49 @@
 
 declare(strict_types=1);
 
-use App\Customer;
-use App\Money;
-use App\NotEnoughFundsErrorException;
-use App\ProductNotAvailableInStockErrorException;
-use App\Shop;
-use App\Manufacturer;
+use App\Money\Money;
+use App\Printing\BalancePrinter;
+use App\Printing\CapitalPrinter;
+use App\Printing\ConsoleFormattedMoneyPrinter;
+use App\Printing\ConsolePrinter;
+use App\Printing\SectionPrinter;
+use App\Printing\WalletPrinter;
+use App\Trading\Customer;
+use App\Trading\Exception\NotEnoughFundsErrorException;
+use App\Trading\Exception\ProductNotAvailableInStockErrorException;
+use App\Trading\Manufacturer;
+use App\Trading\Shop;
 
 require __DIR__ . '/vendor/autoload.php';
+
+$output = new ConsolePrinter();
+$moneyPrinter = new ConsoleFormattedMoneyPrinter($output);
+$capitalPrinter = new CapitalPrinter($output, $moneyPrinter);
+$walletPrinter = new WalletPrinter($output, $moneyPrinter);
+$balancePrinter = new BalancePrinter($output, $moneyPrinter);
+$sectionPrinter = new SectionPrinter($output);
 
 $manufacturer = new Manufacturer();
 $shop = new Shop(new Money(0));
 $johnDoe = new Customer(new Money(100));
 
 try {
-    $shop->resupply(1, $manufacturer);
+    $shop->resupply(1, $manufacturer, $output);
     $shop->sellProduct(1, $johnDoe);
 
-    $shop->resupply(1, $manufacturer);
-    $shop->resupply(2, $manufacturer);
-    $shop->resupply(2, $manufacturer);
+    $shop->resupply(1, $manufacturer, $output);
+    $shop->resupply(2, $manufacturer, $output);
+    $shop->resupply(2, $manufacturer, $output);
     $shop->sellProduct(1, $johnDoe);
     $shop->sellProduct(2, $johnDoe);
     $shop->sellProduct(2, $johnDoe);
 } catch (NotEnoughFundsErrorException | ProductNotAvailableInStockErrorException $e) {
-    fwrite(STDERR, "Error: {$e->getMessage()}");
+    $output->writeError($e->getMessage());
     exit(1);
 }
 
-echo "Final ";
-$manufacturer->printCapital();
-
-echo "Final ";
-$shop->printCapital();
-
-$johnDoe->printMoneyLeft();
-
-echo "\nShop balance: \n";
-$shop->printBalance();
+$sectionPrinter->print('Capital Summary');
+$manufacturer->printCapitalOn($capitalPrinter);
+$shop->printCapitalOn($capitalPrinter);
+$johnDoe->printMoneyLeftOn($walletPrinter);
+$shop->printBalanceOn($balancePrinter);

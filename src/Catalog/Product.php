@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App;
+namespace App\Catalog;
 
-use LogicException;
+use App\Money\Money;
+use App\Trading\Buyer;
+use App\Trading\Exception\NotEnoughFundsErrorException;
 
 class Product
 {
@@ -18,17 +20,11 @@ class Product
     }
 
     /**
-     * @throws \App\NotEnoughFundsErrorException
+     * @throws NotEnoughFundsErrorException
      */
-    public function sellTo(ProductConsumerInterface $customer): Money
+    public function sellTo(Buyer $buyer): Money
     {
-        $paidPrice = $customer->buyProduct($this->sku, $this->price, $this);
-
-        if (!$this->price->equals($paidPrice)) {
-            throw new LogicException('Fraud detected');
-        }
-
-        return $paidPrice;
+        return $buyer->buyProduct($this->sku, $this->price);
     }
 
     public function addPriceMargin(float $margin): Product
