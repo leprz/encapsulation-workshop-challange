@@ -6,7 +6,7 @@ namespace App;
 
 use Throwable;
 
-interface NotEnoughFoundsErrorException extends Throwable
+interface NotEnoughFundsErrorException extends Throwable
 {
 
 }

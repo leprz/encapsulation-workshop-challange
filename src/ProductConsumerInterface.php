@@ -7,7 +7,7 @@ namespace App;
 interface ProductConsumerInterface
 {
     /**
-     * @throws \App\NotEnoughFoundsErrorException
+     * @throws \App\NotEnoughFundsErrorException
      */
     public function buyProduct(int $sku, Money $price, Product $product): Money;
 }

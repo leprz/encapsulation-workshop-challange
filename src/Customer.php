@@ -20,13 +20,15 @@ class Customer implements ProductConsumerInterface
      */
     public function buyProduct(int $sku, Money $price, Product $product): Money
     {
+        $paid = $this->wallet->withdrawMoney($price);
         $this->boughtProducts[$sku] = $product;
-        return $this->wallet->withdrawMoney($price);
+
+        return $paid;
     }
 
     public function printMoneyLeft(): void
     {
         echo "Customer ";
-        $this->wallet->printAvailableCache();
+        $this->wallet->printAvailableCash();
     }
 }
