@@ -9,36 +9,34 @@ use App\Catalog\Product;
 use App\Money\Money;
 use App\Printing\CapitalPrinter;
 use App\Trading\Exception\ManufacturerUnknownProductErrorException;
-use App\Trading\Exception\NotEnoughFoundsErrorException;
-use LogicException;
+use App\Trading\Exception\NotEnoughFundsErrorException;
 
 class Manufacturer implements Supplier
 {
+    private const CATALOG = [
+        1 => ['price' => 10, 'cost' => 8],
+        2 => ['price' => 20, 'cost' => 15],
+        3 => ['price' => 30, 'cost' => 22],
+    ];
+
     /** @var Product[] */
-    private array $products;
+    private array $products = [];
+    /** @var Money[] */
+    private array $productionCosts = [];
     private BankAccount $bankAccount;
 
     public function __construct()
     {
-        $this->products[1] = new Product(1, new Money(10));
-        $this->products[2] = new Product(2, new Money(20));
-        $this->products[3] = new Product(3, new Money(30));
+        foreach (self::CATALOG as $sku => $entry) {
+            $this->products[$sku] = new Product($sku, new Money($entry['price']));
+            $this->productionCosts[$sku] = new Money($entry['cost']);
+        }
 
         $this->bankAccount = new BankAccount();
     }
 
-    private function getCostOfProductionBySku(int $sku): Money
-    {
-        return match ($sku) {
-            1 => new Money(8),
-            2 => new Money(15),
-            3 => new Money(22),
-            default => throw new LogicException('Product do not exist')
-        };
-    }
-
     /**
-     * @throws NotEnoughFoundsErrorException
+     * @throws NotEnoughFundsErrorException
      * @throws ManufacturerUnknownProductErrorException
      */
     public function sellTo(int $sku, Reseller $reseller): void
@@ -60,7 +58,7 @@ class Manufacturer implements Supplier
             );
         }
 
-        $this->bankAccount->addExpense($this->getCostOfProductionBySku($sku));
+        $this->bankAccount->addExpense($this->productionCosts[$sku]);
 
         return clone $this->products[$sku];
     }

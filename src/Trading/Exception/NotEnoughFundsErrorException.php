@@ -6,7 +6,7 @@ namespace App\Trading\Exception;
 
 use Throwable;
 
-interface NotEnoughFoundsErrorException extends Throwable
+interface NotEnoughFundsErrorException extends Throwable
 {
 
 }

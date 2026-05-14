@@ -9,7 +9,7 @@ use App\Printing\ConsoleFormattedMoneyPrinter;
 use App\Printing\ConsolePrinter;
 use App\Printing\WalletPrinter;
 use App\Trading\Customer;
-use App\Trading\Exception\NotEnoughFoundsErrorException;
+use App\Trading\Exception\NotEnoughFundsErrorException;
 use App\Trading\Exception\ProductNotAvailableInStockErrorException;
 use App\Trading\Manufacturer;
 use App\Trading\Shop;
@@ -36,7 +36,7 @@ try {
     $shop->sellProduct(1, $johnDoe);
     $shop->sellProduct(2, $johnDoe);
     $shop->sellProduct(2, $johnDoe);
-} catch (NotEnoughFoundsErrorException | ProductNotAvailableInStockErrorException $e) {
+} catch (NotEnoughFundsErrorException | ProductNotAvailableInStockErrorException $e) {
     fwrite(STDERR, "Error: {$e->getMessage()}");
     exit(1);
 }

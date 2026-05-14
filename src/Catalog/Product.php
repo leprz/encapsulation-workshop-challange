@@ -6,7 +6,7 @@ namespace App\Catalog;
 
 use App\Money\Money;
 use App\Trading\Buyer;
-use App\Trading\Exception\NotEnoughFoundsErrorException;
+use App\Trading\Exception\NotEnoughFundsErrorException;
 
 class Product
 {
@@ -20,7 +20,7 @@ class Product
     }
 
     /**
-     * @throws NotEnoughFoundsErrorException
+     * @throws NotEnoughFundsErrorException
      */
     public function sellTo(Buyer $buyer): Money
     {

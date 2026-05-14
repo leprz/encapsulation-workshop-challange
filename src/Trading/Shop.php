@@ -11,11 +11,13 @@ use App\Printing\BalancePrinter;
 use App\Printing\CapitalPrinter;
 use App\Printing\Printer;
 use App\Trading\Exception\ManufacturerUnknownProductErrorException;
-use App\Trading\Exception\NotEnoughFoundsErrorException;
+use App\Trading\Exception\NotEnoughFundsErrorException;
 use App\Trading\Exception\ProductNotAvailableInStockErrorException;
 
 class Shop implements Reseller
 {
+    private const RESALE_MARGIN = 0.2;
+
     /**
      * @var array<int, Product[]>
      */
@@ -31,7 +33,7 @@ class Shop implements Reseller
 
     /**
      * @throws ProductNotAvailableInStockErrorException
-     * @throws NotEnoughFoundsErrorException
+     * @throws NotEnoughFundsErrorException
      */
     public function sellProduct(int $sku, Buyer $buyer): void
     {
@@ -53,7 +55,7 @@ class Shop implements Reseller
     }
 
     /**
-     * @throws NotEnoughFoundsErrorException
+     * @throws NotEnoughFundsErrorException
      */
     public function resupply(int $sku, Supplier $supplier, Printer $printer): void
     {
@@ -73,7 +75,7 @@ class Shop implements Reseller
 
     public function receiveStock(int $sku, Product $product): void
     {
-        $this->stock[$sku][] = $product->addPriceMargin(0.2);
+        $this->stock[$sku][] = $product->addPriceMargin(self::RESALE_MARGIN);
     }
 
     public function printCapitalOn(CapitalPrinter $printer): void
