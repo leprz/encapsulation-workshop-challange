@@ -37,7 +37,7 @@ try {
     $shop->sellProduct(2, $johnDoe);
     $shop->sellProduct(2, $johnDoe);
 } catch (NotEnoughFundsErrorException | ProductNotAvailableInStockErrorException $e) {
-    fwrite(STDERR, "Error: {$e->getMessage()}");
+    $output->writeError($e->getMessage());
     exit(1);
 }
 

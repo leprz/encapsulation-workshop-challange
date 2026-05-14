@@ -8,11 +8,6 @@ use App\Money\FormattedMoneyPrinter;
 
 class ConsoleFormattedMoneyPrinter implements FormattedMoneyPrinter
 {
-    private const COLUMN_WIDTH = 10;
-    private const ANSI_GREEN = "\033[32m";
-    private const ANSI_RED = "\033[31m";
-    private const ANSI_RESET = "\033[0m";
-
     private readonly bool $useColor;
 
     public function __construct(private readonly Printer $output)
@@ -22,11 +17,11 @@ class ConsoleFormattedMoneyPrinter implements FormattedMoneyPrinter
 
     public function writeAmount(string $display, bool $negative): void
     {
-        $padded = str_pad($display, self::COLUMN_WIDTH, ' ', STR_PAD_LEFT);
+        $padded = str_pad($display, ConsoleLayout::AMOUNT_WIDTH, ' ', STR_PAD_LEFT);
 
         if ($this->useColor) {
-            $color = $negative ? self::ANSI_RED : self::ANSI_GREEN;
-            $this->output->write($color . $padded . self::ANSI_RESET);
+            $color = $negative ? AnsiColor::RED : AnsiColor::GREEN;
+            $this->output->write($color . $padded . AnsiColor::RESET);
         } else {
             $this->output->write($padded);
         }
