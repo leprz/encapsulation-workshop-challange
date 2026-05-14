@@ -6,6 +6,8 @@ namespace App;
 
 class BankAccount
 {
+    private const OVERDRAFT_COMMISSION_RATE = 0.05;
+
     /**
      * @var Money[]
      */
@@ -27,7 +29,7 @@ class BankAccount
 
     private function calculateCommission(Money $expense): Money
     {
-        return $expense->multiply(0.05)->negate();
+        return $expense->multiply(self::OVERDRAFT_COMMISSION_RATE)->negate();
     }
 
     private function getCapital(): Money

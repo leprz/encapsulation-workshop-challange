@@ -6,6 +6,8 @@ namespace App;
 
 class Shop implements ProductConsumerInterface
 {
+    private const RESALE_MARGIN = 0.2;
+
     /**
      * @var array<int, Product[]>
      */
@@ -21,11 +23,11 @@ class Shop implements ProductConsumerInterface
 
     /**
      * @throws \App\ProductNotAvailableInStockErrorException
-     * @throws \App\NotEnoughFoundsErrorException
+     * @throws \App\NotEnoughFundsErrorException
      */
-    public function sellProduct(int $sku, Customer $customer): void
+    public function sellProduct(int $sku, ProductConsumerInterface $consumer): void
     {
-        $paidPrice = $this->takeProductFromStockBySku($sku)->sellTo($customer);
+        $paidPrice = $this->takeProductFromStockBySku($sku)->sellTo($consumer);
 
         $this->bankAccount->addIncome($paidPrice);
     }
@@ -43,15 +45,14 @@ class Shop implements ProductConsumerInterface
     }
 
     /**
-     * @throws \App\NotEnoughFoundsErrorException
+     * @throws \App\NotEnoughFundsErrorException
      */
-    public function resupply(int $sku, Manufacturer $manufacturer): void
+    public function resupply(int $sku, ProductSupplierInterface $supplier): void
     {
         try {
-            $manufacturer->sellTo($sku, $this);
+            $supplier->sellTo($sku, $this);
         } catch (ManufacturerUnknownProductErrorException) {
-            // Do not throw error. Just notify
-            echo "Product sku [$sku] can not be resupplied in this manufacturer. \n";
+            // Unknown product in the supplier's catalog is not fatal for the shop.
         }
     }
 
@@ -59,7 +60,7 @@ class Shop implements ProductConsumerInterface
     {
         $this->bankAccount->addExpense($price);
 
-        $this->stock[$sku][] = $product->addPriceMargin(0.2);
+        $this->stock[$sku][] = $product->addPriceMargin(self::RESALE_MARGIN);
 
         return $price;
     }

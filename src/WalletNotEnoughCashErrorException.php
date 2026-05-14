@@ -6,7 +6,7 @@ namespace App;
 
 use ErrorException;
 
-class WalletNotEnoughCashErrorException extends ErrorException implements NotEnoughFoundsErrorException
+class WalletNotEnoughCashErrorException extends ErrorException implements NotEnoughFundsErrorException
 {
 
 }

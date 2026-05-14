@@ -18,7 +18,7 @@ class Product
     }
 
     /**
-     * @throws \App\NotEnoughFoundsErrorException
+     * @throws \App\NotEnoughFundsErrorException
      */
     public function sellTo(ProductConsumerInterface $customer): Money
     {

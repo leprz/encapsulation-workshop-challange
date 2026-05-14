@@ -31,7 +31,7 @@ class Wallet
         return $amount;
     }
 
-    public function printAvailableCache(): void
+    public function printAvailableCash(): void
     {
         echo "Cash in the wallet: {$this->cash} \n";
     }

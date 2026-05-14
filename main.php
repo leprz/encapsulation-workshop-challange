@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use App\Customer;
 use App\Money;
-use App\NotEnoughFoundsErrorException;
+use App\NotEnoughFundsErrorException;
 use App\ProductNotAvailableInStockErrorException;
 use App\Shop;
 use App\Manufacturer;
@@ -25,7 +25,7 @@ try {
     $shop->sellProduct(1, $johnDoe);
     $shop->sellProduct(2, $johnDoe);
     $shop->sellProduct(2, $johnDoe);
-} catch (NotEnoughFoundsErrorException | ProductNotAvailableInStockErrorException $e) {
+} catch (NotEnoughFundsErrorException | ProductNotAvailableInStockErrorException $e) {
     fwrite(STDERR, "Error: {$e->getMessage()}");
     exit(1);
 }
