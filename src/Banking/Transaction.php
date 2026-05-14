@@ -6,11 +6,11 @@ namespace App\Banking;
 
 use App\Money\Money;
 
-final class Transaction
+final readonly class Transaction
 {
     public function __construct(
-        public readonly string $title,
-        public readonly Money $amount
+        public string $title,
+        public Money  $amount
     ) {
     }
 }

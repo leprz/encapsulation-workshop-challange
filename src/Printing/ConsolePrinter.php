@@ -18,6 +18,6 @@ class ConsolePrinter implements Printer
 
     public function writeError(string $message): void
     {
-        fwrite(STDERR, "\n" . AnsiColor::BOLD_RED . "  ✖ Error:" . AnsiColor::RED . " {$message}" . AnsiColor::RESET . "\n\n");
+        fwrite(STDERR, "\n" . AnsiColor::BOLD_RED . "  ✖ Error:" . AnsiColor::RED . " $message" . AnsiColor::RESET . "\n\n");
     }
 }

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Printing;
 
-class SectionPrinter
+readonly class SectionPrinter
 {
-    public function __construct(private readonly Printer $output)
+    public function __construct(private Printer $output)
     {
     }
 

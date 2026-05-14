@@ -6,11 +6,11 @@ namespace App\Printing;
 
 use App\Money\FormattedMoneyPrinter;
 
-class ConsoleFormattedMoneyPrinter implements FormattedMoneyPrinter
+readonly class ConsoleFormattedMoneyPrinter implements FormattedMoneyPrinter
 {
-    private readonly bool $useColor;
+    private bool $useColor;
 
-    public function __construct(private readonly Printer $output)
+    public function __construct(private Printer $output)
     {
         $this->useColor = defined('STDOUT') && stream_isatty(STDOUT);
     }

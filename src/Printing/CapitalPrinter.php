@@ -7,17 +7,17 @@ namespace App\Printing;
 use App\Money\FormattedMoney;
 use App\Money\FormattedMoneyPrinter;
 
-class CapitalPrinter
+readonly class CapitalPrinter
 {
     public function __construct(
-        private readonly Printer $output,
-        private readonly FormattedMoneyPrinter $moneyPrinter
+        private Printer               $output,
+        private FormattedMoneyPrinter $moneyPrinter
     ) {
     }
 
     public function render(string $owner, FormattedMoney $capital): void
     {
-        $this->output->write(ConsoleLayout::dotRowPrefix("{$owner} capital"));
+        $this->output->write(ConsoleLayout::dotRowPrefix("$owner capital"));
         $capital->render($this->moneyPrinter);
         $this->output->writeLine('');
     }

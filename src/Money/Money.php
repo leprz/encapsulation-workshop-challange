@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Money;
 
-class Money
+readonly class Money
 {
-    public function __construct(private readonly float $amount)
+    public function __construct(private float $amount)
     {
     }
 
@@ -22,7 +22,7 @@ class Money
 
     public function negate(): self
     {
-        return (new self(0))->subtract($this);
+        return new self(0)->subtract($this);
     }
 
     public function multiply(float $multiplier): self

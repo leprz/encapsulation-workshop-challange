@@ -8,11 +8,11 @@ use App\Money\Money;
 use App\Trading\Buyer;
 use App\Trading\Exception\NotEnoughFundsErrorException;
 
-class Product
+readonly class Product
 {
     public function __construct(
-        private readonly int $sku,
-        private readonly Money $price
+        private int   $sku,
+        private Money $price
     ) {
     }
 

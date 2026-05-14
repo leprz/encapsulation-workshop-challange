@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Money;
 
-final class FormattedMoney
+final readonly class FormattedMoney
 {
     public function __construct(
-        private readonly string $display,
-        private readonly bool $negative
+        private string $display,
+        private bool $negative
     ) {
     }
 
